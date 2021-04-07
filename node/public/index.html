@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>8Puzzle</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./styles/global.css">
+  </head>
+
+  <body>
+    <main class="container">
+      <div id="config-container">
+        <div id="config">
+          <input type="text" id="config-shuffle-input">
+          <button id="config-shuffle-button">Shuffle</button>
+        </div>
+      </div>
+      <div class="menu">
+        <h1>8 Puzzle</h1>
+        <div class="input-block">
+          <label for="algorithm-select">Algorithm:</label>
+          <select name="algorithm-select" id="algorithm-select">
+            <option value="a-star">A*</option>
+            <option value="hill-climbing">Hill Climbing</option>
+          </select>
+        </div>
+
+        <div class="input-block">
+          <label for="assessment-function">Assessment Function:</label>
+          <select name="assessment-function" id="assessment-function">
+            <option value="manhattan-distance">Manhattan Distance</option>
+            <option value="number-of-pieces-out-place">Number of Pieces out Place</option>
+            <!-- <option value="number-of-pieces-in-place">Number of Pieces in Place</option> -->
+          </select>
+        </div>
+
+        <div class="input-block">
+          <label for="number-to-shuffle">Number to Shuffle:</label>
+          <input type="number" id="number-to-shuffle" min="0" max="10000" value="25">
+          <button id="shuffle-button">Shuffle</button>
+        </div>
+
+        <button id="solve-button">Solve</button>
+      </div>
+      <div class="content">
+        <div id="info">
+          <h2 id="puzzle-number-of-expansions">Number of Expansions: <span></span></h2>
+          <h2 id="puzzle-execution-time">Execution Time: <span></span></h2>
+          <h2 id="puzzle-status">Status: <span></span></h2>
+          <h2 id="puzzle-steps">Steps: <span></span></h2>
+          <h2 id="puzzle-cost">Cost: <span></span></h2>
+          <h2 id="puzzle-acc">Acc: <span></span></h2>
+        </div>
+        <canvas id="puzzle"></canvas>
+        <div class="propagation-button">
+          <button id="backward-button">&lt;-</button>
+          <button id="forward-button">-&gt;</button>
+        </div>
+      </div>
+    </main>
+    <script src="./socket.io/socket.io.js"></script>
+    <script type="module" src="./scripts/main.js"></script>
+  </body>
+</html>

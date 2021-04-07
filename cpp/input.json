@@ -1,0 +1,6 @@
+{
+  "board": [2,7,3,8,1,5,0,4,6],
+  "position": 6,
+  "algorithm": "hill-climbing",
+  "assessment-function": "manhattan-distance"
+}
