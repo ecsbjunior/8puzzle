@@ -96,19 +96,19 @@ namespace __8puzzle {
       puzzle = stack.top();
       stack.pop();
       
-      if(!Graph::wasVisited(*puzzle)) {
-        Graph::visit.push_back(puzzle);
+      Graph::visit.push_back(puzzle);
 
-        if(!assessmentFunction(puzzle->board)) {
-          Graph::generateSolution(puzzle);
-          Graph::finished = true;
-        }
-        else {
-          std::vector<Puzzle*> puzzles;
-          Functions::generatePaths(puzzle, puzzles, assessmentFunction);
-          std::sort(puzzles.begin(), puzzles.end(), Puzzle::icmp);
+      if(!assessmentFunction(puzzle->board)) {
+        Graph::generateSolution(puzzle);
+        Graph::finished = true;
+      }
+      else {
+        std::vector<Puzzle*> puzzles;
+        Functions::generatePaths(puzzle, puzzles, assessmentFunction);
+        std::sort(puzzles.begin(), puzzles.end(), Puzzle::icmp);
 
-          for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
+        for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
+          if(!Graph::wasVisited(**puzz)) {
             puzzle->childs.push_back(*puzz);
             (*puzz)->father = puzzle;
 
@@ -131,18 +131,18 @@ namespace __8puzzle {
       puzzle = pq.top();
       pq.pop();
 
-      if(!Graph::wasVisited(*puzzle)) {
-        Graph::visit.push_back(puzzle);
+      Graph::visit.push_back(puzzle);
 
-        if(!assessmentFunction(puzzle->board)) {
-          Graph::generateSolution(puzzle);
-          Graph::finished = true;
-        }
-        else {
-          std::vector<Puzzle*> puzzles;
-          Functions::generatePaths(puzzle, puzzles, assessmentFunction);
+      if(!assessmentFunction(puzzle->board)) {
+        Graph::generateSolution(puzzle);
+        Graph::finished = true;
+      }
+      else {
+        std::vector<Puzzle*> puzzles;
+        Functions::generatePaths(puzzle, puzzles, assessmentFunction);
 
-          for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
+        for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
+          if(!Graph::wasVisited(**puzz)) {
             puzzle->childs.push_back(*puzz);
             
             (*puzz)->father = puzzle;
@@ -158,6 +158,10 @@ namespace __8puzzle {
 
   nlohmann::json Graph::toJson() {
     nlohmann::json json = nlohmann::json();
+    nlohmann::json jsonAux = nlohmann::json();
+    std::queue<Puzzle*> queue;
+    Puzzle* puzzle;
+    int currentLine = 1;
 
     for(auto puzzle = Graph::solution.begin(); puzzle != Graph::solution.end(); puzzle++) {
       json["solution"].push_back({
@@ -165,6 +169,39 @@ namespace __8puzzle {
         {"position", (*puzzle)->position},
         {"cost", (*puzzle)->cost},
         {"acc", (*puzzle)->acc}
+      });
+    }
+    
+    std::vector<int> rootChilds;
+    for(auto child = Graph::root->childs.begin(); child != Graph::root->childs.end(); child++) {
+      rootChilds.push_back(currentLine++);
+      queue.push(*child);
+    }
+
+    json["expansions"].push_back({
+      {"board", Graph::root->board},
+      {"position", Graph::root->position},
+      {"cost", Graph::root->cost},
+      {"acc", Graph::root->acc},
+      {"childs", rootChilds}
+    });
+
+    while(!queue.empty()) {
+      puzzle = queue.front();
+      queue.pop();
+
+      std::vector<int> childs;
+      for(auto child = puzzle->childs.begin(); child != puzzle->childs.end(); child++) {  
+        childs.push_back(currentLine++);
+        queue.push(*child);
+      }
+
+      json["expansions"].push_back({
+        {"board", puzzle->board},
+        {"position", puzzle->position},
+        {"cost", puzzle->cost},
+        {"acc", puzzle->acc},
+        {"childs", childs}
       });
     }
 

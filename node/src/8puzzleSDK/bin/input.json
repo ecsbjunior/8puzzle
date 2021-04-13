@@ -1,1 +1,1 @@
-{"board":[0,1,2,4,5,3,7,8,6],"position":0,"algorithm":"hill-climbing","assessment-function":"manhattan-distance"}
+{"board":[1,2,3,0,4,8,7,6,5],"position":3,"algorithm":"hill-climbing-iterative","assessment-function":"number-of-pieces-out-place"}

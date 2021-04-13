@@ -33,6 +33,8 @@ function Socket(puzzle, puzzleAnalysis) {
         puzzle.getState().acc = data.solution[0].acc;
       }
 
+      
+      puzzleAnalysis.getState().expansions = data.expansions;
       puzzleAnalysis.getState().executionTime = data.executionTime;
       puzzleAnalysis.getState().numberOfExpansions = data.numberOfExpansions;
       puzzleAnalysis.getState().solutionIndex = 0;

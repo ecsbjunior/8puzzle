@@ -6,6 +6,7 @@ function __8PuzzleAnalysis(puzzle) {
     solutionIndex: 0,
     executionTime: 0,
     numberOfExpansions: 0,
+    expansions: [],
     solution: [],
   };
 
@@ -59,8 +60,25 @@ function __8PuzzleAnalysis(puzzle) {
     return state;
   }
 
+  function expansionInSolution(expansion) {
+    function equals(a1, a2) {
+      return a1.length === a2.length && (
+        a1.every((item, index) => item === a2[index])
+      )
+    }
+
+    for(const item of state.solution) {
+      if(equals(item.board, expansion)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   return {
     listen,
+    expansionInSolution,
     getState
   };
 }

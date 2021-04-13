@@ -8,7 +8,9 @@ function TreeView(puzzleAnalysis) {
 
   function draw() {
     const data = {
-      nodes: puzzleAnalysis.getState().solution.map((node, index) => {
+      nodes: puzzleAnalysis.getState().expansions.map((node, index) => {
+        const isSolve = puzzleAnalysis.expansionInSolution(node.board);
+        
         return {
           id: index,
           label: node.board.map((item, index) => item+(((index+1)%3 === 0) ? '\n' : ' ')).join(''),
@@ -21,9 +23,9 @@ function TreeView(puzzleAnalysis) {
           },
           color: {
             background: 'rgb(19, 17, 27)',
-            border: 'rgb(71, 194, 225)',
+            border: isSolve ? 'rgb(103, 228, 116)' : 'rgb(71, 194, 225)',
             highlight: {
-              border: 'rgb(71, 194, 225)',
+              border: isSolve ? 'rgb(103, 228, 116)' : 'rgb(71, 194, 225)',
               background: 'rgb(19, 17, 27)',
             },
           },
@@ -35,16 +37,7 @@ function TreeView(puzzleAnalysis) {
           shape: 'circle'
         };
       }),
-      edges: puzzleAnalysis.getState().solution.map((node, index) => {
-        return {
-          id: index,
-          from: index,
-          to: index + 1,
-          color: {
-            color: 'rgb(170, 170, 170)'
-          }
-        };
-      })
+      edges: []
     };
     var options = {
       layout: {
@@ -70,6 +63,19 @@ function TreeView(puzzleAnalysis) {
       //   showButton: false
       // }
     };
+
+    puzzleAnalysis.getState().expansions.forEach((node, index) => {
+      node.childs.forEach(child => {
+        data.edges.push({
+          id: index+child,
+          from: index,
+          to: child,
+          color: {
+            color: 'rgb(170, 170, 170)'
+          }
+        });
+      })
+    })
 
     state.network = new vis.Network(state.element, data, options);
 

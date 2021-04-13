@@ -77,14 +77,14 @@ int main() {
 
   //define algorithm to use
   if(!input.algorithm.compare("hill-climbing")) {
-    printf("==== HILL CLIMBING ====\n");
+    // printf("==== HILL CLIMBING ====\n");
     start = clock();
     __8puzzle::MyGraph.visit.push_back(__8puzzle::MyGraph.root);
     __8puzzle::MyGraph.HillClimbing(__8puzzle::MyGraph.root, assessmentFunction);
     end = clock();
   }
   else if(!input.algorithm.compare("hill-climbing-iterative")) {
-    printf("==== HILL CLIMBING ====\n");
+    // printf("==== HILL CLIMBING ====\n");
     start = clock();
     // __8puzzle::MyGraph.visit.push_back(__8puzzle::MyGraph.root);
     __8puzzle::MyGraph.HillClimbingIterative(__8puzzle::MyGraph.root, assessmentFunction);
@@ -101,7 +101,7 @@ int main() {
   executionTime = end-start;
   // printf("Execution Time: %ldms\n", executionTime);
 
-  __8puzzle::Puzzle::show(__8puzzle::MyGraph.solution);
+  // __8puzzle::Puzzle::show(__8puzzle::MyGraph.solution);
 
   //Write output json file
   nlohmann::json out = __8puzzle::MyGraph.toJson();
