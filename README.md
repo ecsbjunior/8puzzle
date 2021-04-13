@@ -4,8 +4,12 @@
     <img src="https://raw.githubusercontent.com/ecsbjunior/8puzzle/master/assets/screen-1.png" alt="8 puzzle screen" width="100%">
 </div>
 
+<div id="logo" align="center">
+    <img src="https://raw.githubusercontent.com/ecsbjunior/8puzzle/master/assets/screen-2.png" alt="8 puzzle screen" width="100%">
+</div>
+
 ## Getting started
-    # Windows (cmd.exe)
+    # Windows (cmd.exe | powershell.exe)
     git clone https://github.com/ecsbjunior/8puzzle
     cd 8puzzle
     npm install
