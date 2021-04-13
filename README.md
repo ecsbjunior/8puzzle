@@ -10,8 +10,15 @@
 
 ## Getting started
     # Windows (cmd.exe | powershell.exe)
-    git clone https://github.com/ecsbjunior/8puzzle
-    cd 8puzzle
-    npm install
-    npm run dev
-    Access localhost:3333 in your browser
+        git clone https://github.com/ecsbjunior/8puzzle
+        cd ./8puzzle
+    # Instaling dependencies for nodejs
+        cd ./node
+        npm install
+        npm run dev
+        Access localhost:3333 in your browser
+
+    # Compiling cpp files (cl and cmake is necessary in path variable system)
+        cd ./cpp
+        build
+        Access build folder to access executable file
