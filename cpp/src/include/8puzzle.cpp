@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <stack>
 #include <queue>
 #include <string>
 #include <8puzzle.h>
@@ -9,6 +10,10 @@ namespace __8puzzle {
   //====== PUZZLE ======//
   bool Puzzle::cmp(Puzzle* a, Puzzle* b) {
     return a->cost < b->cost;
+  }
+
+  bool Puzzle::icmp(Puzzle* a, Puzzle* b) {
+    return a->cost > b->cost;
   }
   
   void Puzzle::show(std::vector<Puzzle*> puzzles) {
@@ -53,6 +58,8 @@ namespace __8puzzle {
   }
 
   void Graph::HillClimbing(Puzzle* puzzle, int (*assessmentFunction)(std::vector<int> &board)) {
+    Graph::visit.push_back(puzzle);
+
     if(!assessmentFunction(puzzle->board)) {
       // printf("SOLVED!!\n");
       Graph::generateSolution(puzzle);
@@ -67,14 +74,47 @@ namespace __8puzzle {
     std::sort(puzzles.begin(), puzzles.end(), Puzzle::cmp);
 
     for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
-      //Father to child
-      puzzle->childs.push_back(*puzz);
-      //Child to father
-      (*puzz)->father = puzzle;
+      if(!Graph::wasVisited(**puzz)) {
+        //Father to child
+        puzzle->childs.push_back(*puzz);
+        //Child to father
+        (*puzz)->father = puzzle;
 
-      if((*puzz)->cost < puzzle->cost) {
-        Graph::visit.push_back(*puzz);
-        HillClimbing(*puzz, assessmentFunction);
+        if((*puzz)->cost < puzzle->cost) {
+          HillClimbing(*puzz, assessmentFunction);
+        }
+      }
+    }
+  }
+
+  void Graph::HillClimbingIterative(Puzzle* puzzle, int (*assessmentFunction)(std::vector<int> &board)) {
+    std::stack<Puzzle*> stack;
+    int cont = 0;
+    
+    stack.push(puzzle);
+    while(!stack.empty() && !Graph::finished) {
+      puzzle = stack.top();
+      stack.pop();
+      
+      if(!Graph::wasVisited(*puzzle)) {
+        Graph::visit.push_back(puzzle);
+
+        if(!assessmentFunction(puzzle->board)) {
+          Graph::generateSolution(puzzle);
+          Graph::finished = true;
+        }
+        else {
+          std::vector<Puzzle*> puzzles;
+          Functions::generatePaths(puzzle, puzzles, assessmentFunction);
+          std::sort(puzzles.begin(), puzzles.end(), Puzzle::icmp);
+
+          for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
+            puzzle->childs.push_back(*puzz);
+            (*puzz)->father = puzzle;
+
+            stack.push(*puzz);
+          }
+        }
       }
     }
   }
@@ -87,26 +127,24 @@ namespace __8puzzle {
     std::priority_queue<Puzzle*, std::vector<Puzzle*>, decltype(compare)> pq(compare);
 
     pq.push(puzzle);
-    while(!Graph::finished && !pq.empty()) {
+    while(!pq.empty() && !Graph::finished) {
       puzzle = pq.top();
-      Graph::visit.push_back(puzzle);
       pq.pop();
 
-      if(!assessmentFunction(puzzle->board)) {
-        // printf("SOLVED!!\n");
-        Graph::generateSolution(puzzle);
-        Graph::finished = true;
-      }
-      else {
-        std::vector<Puzzle*> puzzles;
+      if(!Graph::wasVisited(*puzzle)) {
+        Graph::visit.push_back(puzzle);
 
-        Functions::generatePaths(puzzle, puzzles, assessmentFunction);
+        if(!assessmentFunction(puzzle->board)) {
+          Graph::generateSolution(puzzle);
+          Graph::finished = true;
+        }
+        else {
+          std::vector<Puzzle*> puzzles;
+          Functions::generatePaths(puzzle, puzzles, assessmentFunction);
 
-        for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
-          if(!wasVisited(**puzz)) {
-            //Father to child
+          for(auto puzz = puzzles.begin(); puzz != puzzles.end(); puzz++) {
             puzzle->childs.push_back(*puzz);
-            //Child to father
+            
             (*puzz)->father = puzzle;
             (*puzz)->acc = puzzle->acc+1;
             (*puzz)->cost += (*puzz)->acc;

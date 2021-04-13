@@ -3,6 +3,7 @@ import __8PuzzleAnalysis from './8PuzzleAnalysis.js';
 import __8Puzzle from './8Puzzle.js';
 import Render from './Render.js';
 import Socket from './Socket.js';
+import TreeView from './TreeView.js';
 
 function main() {
   const puzzle = __8Puzzle();
@@ -10,7 +11,9 @@ function main() {
   const socket = Socket(puzzle, puzzleAnalysis);
   const render = Render(puzzle);
   const keyboardInputEvent = KeyboardInputEvent(puzzle);
+  const treeView = TreeView(puzzleAnalysis);
 
+  const showTreeButton = document.getElementById('show-tree-button');
   const solveButton = document.getElementById('solve-button');
   const shuffleButton = document.getElementById('shuffle-button');
   const configShuffleButton = document.getElementById('config-shuffle-button');
@@ -23,6 +26,18 @@ function main() {
 
   render.run();
 
+  showTreeButton.addEventListener('click', () => {
+    if(showTreeButton.innerText !== 'Show Puzzle') {
+      treeView.draw();
+      showTreeButton.innerText = "Show Puzzle";
+    }
+    else {
+      showTreeButton.innerText = "Show Tree";
+      document.getElementById('content').style.display = 'flex';
+      document.getElementById('tree-view').style.display = 'none';
+    }
+  });
+
   solveButton.addEventListener('click', () => {
     const puzzleStatus = document.getElementById('puzzle-status').childNodes[1];
     puzzleStatus.style.color = 'var(--background-black)';
@@ -34,6 +49,8 @@ function main() {
       "algorithm": algorithmSelect.value,
       "assessment-function": assessmentFunctionSelect.value
     });
+
+    showTreeButton.style.display = 'block';
   });
 
   shuffleButton.addEventListener('click', () => {
@@ -77,10 +94,11 @@ function main() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', main);
 document.addEventListener('keydown', event => {
   if(event.key === 'c') {
     const configContainer = document.getElementById('config-container');
     configContainer.style.display = configContainer.style.display === 'none' ? 'flex' : 'none';
   }
 });
+
+document.addEventListener('DOMContentLoaded', main);

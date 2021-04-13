@@ -20,6 +20,7 @@ namespace __8puzzle {
     int acc;
 
     static bool cmp(Puzzle* a, Puzzle* b);
+    static bool icmp(Puzzle* a, Puzzle* b);
     static void show(std::vector<Puzzle*> puzzles);
   };
 
@@ -35,6 +36,7 @@ namespace __8puzzle {
     nlohmann::json toJson();
 
     void HillClimbing(Puzzle* puzzle, int (*assessmentFunction)(std::vector<int> &board));
+    void HillClimbingIterative(Puzzle* puzzle, int (*assessmentFunction)(std::vector<int> &board));
     void AStar(Puzzle* puzzle, int (*assessmentFunction)(std::vector<int> &board));
   } MyGraph;
   

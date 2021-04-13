@@ -26,6 +26,8 @@ body, input, button, textarea, select {
   height: 100vh;
 
   background-color: var(--background);
+
+  overflow: hidden;
 }
 
 .container .menu {
@@ -52,7 +54,7 @@ body, input, button, textarea, select {
   font-weight: 700;
 }
 
-.container .content {
+.container #content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,6 +123,16 @@ label {
   font-size: 10px;
 }
 
+.last-buttons {
+  width: 100%;
+  margin-top: auto;
+}
+
+.last-buttons #show-tree-button {
+  display: none;
+  margin-top: 8px;
+}
+
 #config-container {
   display: none;
   align-items: center;
@@ -129,7 +141,7 @@ label {
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(10px);
-  z-index: 654654;
+  z-index: 10;
 }
 
 #config {
@@ -141,4 +153,11 @@ label {
   height: 400px;
   image-rendering: pixelated;
   background-color: var(--background-dark);
+}
+
+#tree-view {
+  display: none;
+  position: relative;
+
+  width: 100%;
 }

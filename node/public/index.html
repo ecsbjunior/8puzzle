@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="./scripts/vis/dist/vis.min.css">
     <link rel="stylesheet" href="./styles/global.css">
   </head>
 
@@ -28,6 +29,7 @@
           <select name="algorithm-select" id="algorithm-select">
             <option value="a-star">A*</option>
             <option value="hill-climbing">Hill Climbing</option>
+            <option value="hill-climbing-iterative">Hill Climbing Iterative</option>
           </select>
         </div>
 
@@ -46,9 +48,13 @@
           <button id="shuffle-button">Shuffle</button>
         </div>
 
-        <button id="solve-button">Solve</button>
+        <div class="last-buttons">
+          <button id="solve-button">Solve</button>
+          <button id="show-tree-button">Show Tree</button>
+        </div>
       </div>
-      <div class="content">
+      <div id="tree-view"></div>
+      <div id="content">
         <div id="info">
           <h2 id="puzzle-number-of-expansions">Number of Expansions: <span></span></h2>
           <h2 id="puzzle-execution-time">Execution Time: <span></span></h2>
@@ -59,12 +65,17 @@
         </div>
         <canvas id="puzzle"></canvas>
         <div class="propagation-button">
-          <button id="backward-button">&lt;-</button>
-          <button id="forward-button">-&gt;</button>
+          <button id="backward-button">
+            &lt;-
+          </button>
+          <button id="forward-button">
+            -&gt;
+          </button>
         </div>
       </div>
     </main>
     <script src="./socket.io/socket.io.js"></script>
+    <script src="./scripts/vis/dist/vis.min.js"></script>
     <script type="module" src="./scripts/main.js"></script>
   </body>
 </html>
